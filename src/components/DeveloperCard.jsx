@@ -1,6 +1,7 @@
-
 import { Fragment, useState } from 'react';
 import { SkillBadge } from './SkillBadge.jsx';
+import styles from './DeveloperCard.module.css';
+
 
 const defaultMetrics = {
   commits: 512,
@@ -37,41 +38,47 @@ function getInitials(fullName) {
 }
 
 export function DeveloperCard({
-  fullName = 'Tran Vinh Khiem',
+  fullName = 'Luong Quoc Dat',
   role = 'Senior Systems Architect • UIT S3T',
-  avatarUrl = 'https://placehold.co/64x64/png?text=Avatar',
+avatarUrl = 'https://placehold.co/64x64/png?text=Avatar',
   metrics = defaultMetrics,
   skills = defaultSkills,
 }) {
-    const [imageFailed, setImageFailed] = useState(false);
-const initials = getInitials(fullName);
-  return (
-    <article aria-labelledby="dev-heading">
-      <header>
-       {imageFailed ? (
-  <span
-    role="img"
-    aria-label={`${fullName} avatar`}
-  >
-    {initials}
-  </span>
-) : (
-  <img
-    src={avatarUrl}
-    alt={`${fullName} avatar`}
-    width="64"
-    height="64"
-    onError={() => setImageFailed(true)}
-  />
-)}
+  const [imageFailed, setImageFailed] = useState(false);
+  const initials = getInitials(fullName);
 
-        <hgroup>
+  return (
+    <article
+      className={styles.card}
+      aria-labelledby="dev-heading"
+    >
+      <header className={styles.header}>
+        {imageFailed ? (
+          <span
+            className={styles.initials}
+            role="img"
+            aria-label={`${fullName} avatar`}
+          >
+            {initials}
+          </span>
+        ) : (
+          <img
+            className={styles.avatar}
+            src={avatarUrl}
+            alt={`${fullName} avatar`}
+            width="64"
+            height="64"
+            onError={() => setImageFailed(true)}
+          />
+        )}
+
+        <hgroup className={styles.identity}>
           <h2 id="dev-heading">{fullName}</h2>
           <p>{role}</p>
         </hgroup>
       </header>
 
-      <dl>
+      <dl className={styles.metrics}>
         {Object.entries(metrics).map(([key, value]) => (
           <Fragment key={key}>
             <dt>{key}</dt>
@@ -80,7 +87,10 @@ const initials = getInitials(fullName);
         ))}
       </dl>
 
-      <ul aria-label="Engineered Skills">
+      <ul
+        className={styles.skills}
+        aria-label="Engineered Skills"
+      >
         {skills.map((skill) => (
           <SkillBadge
             key={skill.id}
